@@ -12,23 +12,14 @@ def jokecreator ():
     return myjokedictionary[randint(0,4)]
 
 # Try adding your own number to this list!
-callers = {
-    "+17184165926": "Curious George",
-    "+14158675310": "Boots",
-    "+14158675311": "Virgil",
-    "+17184165926": "Chris"
-}
  
 @app.route("/", methods=['GET', 'POST'])
 def hello_monkey():
     """Respond and greet the caller by name."""
     if request.method=="GET":
         from_number = request.values.get('From', None)
-        if from_number in callers:
-            message = jokecreator();
-        else:
-            message = "Monkey, thanks for the message!"
-
+        message = jokecreator();
+      
         resp = twilio.twiml.Response()
         resp.message(message)
 
