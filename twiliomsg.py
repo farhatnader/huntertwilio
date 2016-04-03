@@ -13,9 +13,12 @@ app = Flask(__name__)
 @app.route("/", methods=['GET', 'POST'])
 def hello_monkey():
     if request.method == "GET":
-        user_request = request.values.get('Body', None)
+    	account_sid = "AC5e15f23d349b00ae2a044fdec01bed42"
+    	auth_token = "fb6567ba8daf7960c8fdbe0818b3ec5a"
+    	client = TwilioRestClient(account_sid, auth_token)
 
-        print(user_request)
+    	user_num = request.values.get('From', None)
+        user_request = request.values.get('Body', None)
 
         data = json.loads(urllib.urlopen("http://api.giphy.com/v1/gifs/search?q=" 
         		+ user_request 
@@ -27,7 +30,7 @@ def hello_monkey():
         	print(thing['images']['fixed_height']['url'])
         	list_of_urls.append(thing['images']['fixed_height']['url'])
 
-        message = random.choice(list_of_urls)
+        message = client.messages.create(to=user_num, from_="+13478366734", media_url=random.choice(list_of_urls))
 
         resp = twilio.twiml.Response()
         resp.message(message)
