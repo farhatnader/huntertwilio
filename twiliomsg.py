@@ -1,16 +1,39 @@
+from flask import Flask, request, redirect
 from twilio.rest import TwilioRestClient
 from random import randint 
-# Find these values at https://twilio.com/user/account
 
-def jokecreator ():
-	myjokedictionary = ["whats hairy and red all over", "the thundercats will live again", "boogers are funny", "farts make people laugh but they stink", 
-						"if God was a bird, he'd be a bird"]
-	return myjokedictionary[randint(0,4)]
-
-
-account_sid = "AC5e15f23d349b00ae2a044fdec01bed42"
-auth_token  = "fb6567ba8daf7960c8fdbe0818b3ec5a"
-client = TwilioRestClient(account_sid, auth_token)
+import twilio.twiml
  
-message = client.messages.create(to="+17186400449", from_="+13478366734",
-                                     body= jokecreator() )
+app = Flask(__name__)
+ 
+def jokecreator ():
+    myjokedictionary = ["whats hairy and red all over", "http://www.vitaminbeyonce.com/", "http://www.randomgoat.com/", "farts make people laugh but they stink", 
+                        "if God was a bird, he'd be a bird"]
+    return myjokedictionary[randint(0,4)]
+
+# Try adding your own number to this list!
+callers = {
+    "+17184165926": "Curious George",
+    "+14158675310": "Boots",
+    "+14158675311": "Virgil",
+    "+17184165926": "Chris"
+}
+ 
+@app.route("/", methods=['GET', 'POST'])
+def hello_monkey():
+    """Respond and greet the caller by name."""
+    if request.method=="GET":
+        from_number = request.values.get('From', None)
+        if from_number in callers:
+            message = jokecreator();
+        else:
+            message = "Monkey, thanks for the message!"
+
+        resp = twilio.twiml.Response()
+        resp.message(message)
+
+        return str(resp)
+ 
+if __name__ == "__main__":
+    app.run(debug=True)
+
