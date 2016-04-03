@@ -28,8 +28,12 @@ def textline():
 							"Content-Type": "application/x-www-form-urlencoded",
 							"Accept": "application/json"
 						})
-
 			message = data.body['quote'] + '  -' + data.body['author']
+
+		elif user_request.lower() == 'joke':
+			data = json.loads(urllib.urlopen("http://api.icndb.com/jokes/random/").read())
+
+			message = data['value']['joke']
 
 		else:
 			data = json.loads(urllib.urlopen("http://api.giphy.com/v1/gifs/search?q="
