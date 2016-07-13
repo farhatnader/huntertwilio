@@ -1,12 +1,13 @@
 #TwiliPhy
 
 ```pip install Flask```
+
 ```pip install twilio```
 
 Run: ```python twiliomsg.py```
 
-While it is running on a server, it works by a user sending a text message to the number:
-```13478366734```
+While it is running on a server, it works by a user sending a text message to the number: 
+		13478366734
 
 The user may prompt anything. 
 If it is "quote", the user will receive a randomly generated quote from a famous person.
